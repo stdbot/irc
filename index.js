@@ -35,6 +35,11 @@ function IRC (config) {
   emitter.reply = (message, text) =>
     emitter.send(message, emitter.address(message.user, text))
 
+  emitter.messageRoom = (room, text) =>
+    client.say(room, text)
+
+  emitter.end = () => client.end()
+
   return emitter
 }
 
