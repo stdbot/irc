@@ -29,14 +29,16 @@ function IRC (config) {
   emitter.isMentionned = (user, message) =>
     message.text.toLowerCase().split(/\s+/).includes(user.name.toLowerCase())
 
-  emitter.send = (message, text) =>
-    client.say(message.raw.to, text)
+  emitter.send = (message, text) => (
+    client.say(message.raw.to, text),
+    Promise.resolve({ from: client.nick, to: message.raw.to, message: text }))
 
   emitter.reply = (message, text) =>
     emitter.send(message, emitter.address(message.user, text))
 
-  emitter.messageRoom = (room, text) =>
-    client.say(room, text)
+  emitter.messageRoom = (room, text) => (
+    client.say(room, text),
+    Promise.resolve({ from: client.nick, to: room, message: text }))
 
   emitter.end = () => client.end()
 
